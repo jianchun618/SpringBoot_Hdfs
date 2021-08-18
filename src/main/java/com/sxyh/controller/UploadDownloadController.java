@@ -1,10 +1,12 @@
 package com.sxyh.controller;
 
 import java.io.*;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sxyh.util.ExcelUtils;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -90,9 +92,29 @@ public class UploadDownloadController {
 		return "下载成功";
 	}
 
-	@RequestMapping(value = "/test", method = { RequestMethod.POST })
-	public String test(){
+	/**
+	 * 新增解析excel文件功能
+	 * @param request
+	 * @param response
+	 * @param fileName
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/printFileInfo", method = { RequestMethod.POST })
+	public String printFileInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam("filename")String fileName) throws Exception {
 		System.out.println("-----test-----");
+		logger.info("downloadFromHdfs started....");
+		System.out.println("------------------------------------------------------------");
+		String originalFilename = hdfsUtil.getHdfsProperties().getUploadPath() + fileName;
+		//String destFileName = localFilePath;
+		//hdfs文件流读取文件
+		FSDataInputStream in = hdfsUtil.downloadFile(new String[] { originalFilename});
+		if(in == null){
+			return  "下载失败,文件不存在";
+		}
+		List courseListByExcel = ExcelUtils.getCourseListByExcel(in, originalFilename);
+		System.out.println(courseListByExcel);
+
 		return "------test-----";
 	}
 }
