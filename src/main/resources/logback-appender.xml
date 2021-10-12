@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<included>
+
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <pattern>${LOG_DEV_PATTERN}</pattern>
+        <charset>utf8</charset>
+    </encoder>
+</appender>
+
+<!-- filter: (>=INFO) or (logname prefix = ${APP_PACKAGE}) -->
+<appender name="FILE_APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="io.fmbank.log.FastPackageThresholdFilter">
+        <level>INFO</level>
+        <prefix>${APP_PACKAGE}</prefix>
+    </filter>
+    <file>${LOG_HOME}/app.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <!-- rollover daily -->
+        <fileNamePattern>${LOG_HOME}/app/app-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+        <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        <!-- each file should be at most 100MB, keep 100 days worth of history, but at most 30GB -->
+        <maxFileSize>${LOG_MAX_SIZE}</maxFileSize>
+        <maxHistory>100</maxHistory>
+        <totalSizeCap>30GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+        <pattern>${LOG_COMMON_PATTERN}</pattern>
+    </encoder>
+</appender>
+
+<!-- TRACE and ALL -->
+<!--<appender name="FILE_TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="io.fmbank.log.FastThresholdFilter">
+        <level>TRACE</level>
+    </filter>
+    <file>${LOG_HOME}/trace.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_HOME}/trace/trace-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+        <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        <maxFileSize>${LOG_MAX_SIZE}</maxFileSize>
+        <maxHistory>3</maxHistory>
+        <totalSizeCap>5GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+        <pattern>${LOG_COMMON_PATTERN}</pattern>
+    </encoder>
+</appender>-->
+
+
+<!-- DEBUG or Greater -->
+<!--<appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="io.fmbank.log.FastThresholdFilter">
+        <level>DEBUG</level>
+    </filter>
+    <file>${LOG_HOME}/debug.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_HOME}/debug/debug-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+        <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        <maxFileSize>${LOG_MAX_SIZE}</maxFileSize>
+        <maxHistory>7</maxHistory>
+        <totalSizeCap>10GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+        <pattern>${LOG_COMMON_PATTERN}</pattern>
+    </encoder>
+
+</appender>-->
+
+    <!--info日志去掉-->
+<!--
+ INFO or Greater
+-->
+<appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="io.fmbank.log.FastThresholdFilter">
+        <level>INFO</level>
+    </filter>
+    <file>${LOG_HOME}/info.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_HOME}/info/info-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+        <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        <maxFileSize>${LOG_MAX_SIZE}</maxFileSize>
+        <maxHistory>100</maxHistory>
+        <totalSizeCap>30GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+        <pattern>${LOG_COMMON_PATTERN}</pattern>
+    </encoder>
+</appender>
+
+<!-- filter: WARN and ERROR -->
+<appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="io.fmbank.log.FastThresholdFilter">
+        <level>WARN</level>
+    </filter>
+    <file>${LOG_HOME}/error.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <!-- rollover daily -->
+        <fileNamePattern>${LOG_HOME}/error/error-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+        <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        <!-- each file should be at most 100MB, keep 100 days worth of history, but at most 30GB -->
+        <maxFileSize>${LOG_MAX_SIZE}</maxFileSize>
+        <maxHistory>100</maxHistory>
+        <totalSizeCap>30GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+        <pattern>${LOG_COMMON_PATTERN}</pattern>
+    </encoder>
+</appender>
+
+</included>
+

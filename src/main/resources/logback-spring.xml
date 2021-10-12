@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+  <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+  <!-- 使用Spring配置的变量 -->
+  <!-- 部署的环境类型：${spring.profiles.active}，默认dev -->
+  <springProperty scope="context" name="DEPLOY_ENV" source="spring.profiles.active" defaultValue="dev" />
+  
+  <springProperty scope="context" name="LOG_HOME" source="log.basepath" defaultValue="/home/tomcat/logs/cust_data_plat" />
+
+  <!-- 主日志级别 -->
+  <springProperty scope="context" name="ROOT_LEVEL" source="log.root.level" defaultValue="INFO" />
+
+  <!-- APP 日志级别 -->
+  <springProperty scope="context" name="APP_LEVEL" source="log.app.level" defaultValue="TRACE" />
+  
+  <!-- APP Package 前缀，对应java的package路径 -->
+  <springProperty scope="context" name="APP_PACKAGE" source="log.app.package" defaultValue="com.sxyh" />
+  
+  <!-- 日志基本输出格式 -->
+  <springProperty scope="context" name="LOG_COMMON_PATTERN" source="log.pattern.common" defaultValue="%d{HH:mm:ss.SSS} [%thread] traceid:[%X{traceid}] [%level] %logger - %msg%n" />
+  
+  <!-- 开发使用，通常为控制台输出 -->
+  <springProperty scope="context" name="LOG_DEV_PATTERN" source="log.pattern.dev" defaultValue="${CONSOLE_LOG_PATTERN:-%d{HH:mm:ss.SSS} [%thread] traceid:[%X{traceid}] %-5level %logger{48}:%line - %msg%n}" />
+
+  <!-- 日志文件大小,超过这个大小将被压缩 -->
+  <springProperty scope="context" name="LOG_MAX_SIZE" source="log.maxsize" defaultValue="100MB" />
+
+  <!-- 引入标准appender配置 -->
+  <include resource="logback-appender.xml" />
+
+  
+  <!-- 设置app level和root level -->
+  <logger name="${APP_PACKAGE}" level="${APP_LEVEL}" />
+  <root level="${ROOT_LEVEL}">
+    <appender-ref ref="FILE_APP"/>
+<!--    <appender-ref ref="FILE_TRACE"/>
+    <appender-ref ref="FILE_DEBUG"/>
+    -->
+
+<!--
+    <appender-ref ref="FILE_TRACE"/>
+-->
+    <appender-ref ref="FILE_INFO"/>
+    <appender-ref ref="FILE_WARN"/>
+    <appender-ref ref="STDOUT" />
+  </root>
+
+</configuration>
