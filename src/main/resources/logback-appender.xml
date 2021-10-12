@@ -11,7 +11,7 @@
 
 <!-- filter: (>=INFO) or (logname prefix = ${APP_PACKAGE}) -->
 <appender name="FILE_APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <filter class="io.fmbank.log.FastPackageThresholdFilter">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
         <level>INFO</level>
         <prefix>${APP_PACKAGE}</prefix>
     </filter>
@@ -32,7 +32,7 @@
 
 <!-- TRACE and ALL -->
 <!--<appender name="FILE_TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <filter class="io.fmbank.log.FastThresholdFilter">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
         <level>TRACE</level>
     </filter>
     <file>${LOG_HOME}/trace.log</file>
@@ -51,7 +51,7 @@
 
 <!-- DEBUG or Greater -->
 <!--<appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <filter class="io.fmbank.log.FastThresholdFilter">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
         <level>DEBUG</level>
     </filter>
     <file>${LOG_HOME}/debug.log</file>
@@ -73,7 +73,7 @@
  INFO or Greater
 -->
 <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <filter class="io.fmbank.log.FastThresholdFilter">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
         <level>INFO</level>
     </filter>
     <file>${LOG_HOME}/info.log</file>
@@ -91,7 +91,7 @@
 
 <!-- filter: WARN and ERROR -->
 <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <filter class="io.fmbank.log.FastThresholdFilter">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
         <level>WARN</level>
     </filter>
     <file>${LOG_HOME}/error.log</file>
