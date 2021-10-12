@@ -137,6 +137,13 @@
       <version>3.16</version>
     </dependency>
 
+    <!--sftp相关-->
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>0.1.53</version>
+    </dependency>
+
   </dependencies>
 
   <build>
