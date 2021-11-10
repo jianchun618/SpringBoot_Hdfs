@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.GenericOptionsParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.sxyh.config.HdfsProperties;
 
@@ -26,9 +25,9 @@ import com.sxyh.config.HdfsProperties;
  * @version V1.0
  * @Date 2019年8月22日 下午3:52:53
  */
+@Slf4j
 public class HdfsUtil {
 
-	private static final Logger logger = LogManager.getLogger(HdfsUtil.class);
 
 	private HdfsProperties hdfsProperties;
 
@@ -51,8 +50,8 @@ public class HdfsUtil {
 	public Configuration getConfig(){
 		Configuration conf = new Configuration();
 		// conf.setBoolean(CROSS_PLATFORM, true);
-		logger.info("host: " + hdfsProperties.getHost());
-		logger.info("defaultfs: " + hdfsProperties.getDefaultfs());
+		log.info("host: " + hdfsProperties.getHost());
+		log.info("defaultfs: " + hdfsProperties.getDefaultfs());
 		conf.set(hdfsProperties.getDefaultfs(), hdfsProperties.getHost());
 		return conf;
 	}
@@ -72,8 +71,8 @@ public class HdfsUtil {
 
 		Path source = new Path(args[0]);
 		Path dest = new Path(args[1]);
-		logger.info("source::::: " + source.toUri().getPath());
-		logger.info("dest:::: " + dest.toUri().getPath());
+		log.info("source::::: " + source.toUri().getPath());
+		log.info("dest:::: " + dest.toUri().getPath());
 		FileSystem fs = FileSystem.get(conf);
 
 		fs.copyFromLocalFile(true, false, source, dest);
@@ -95,7 +94,7 @@ public class HdfsUtil {
 		Path source = new Path(args[0]);
 		//Path dest = new Path(args[1]);
 
-		logger.info("source::::: " + source.toUri().getPath());
+		log.info("source::::: " + source.toUri().getPath());
 		//logger.info("dest:::: " + dest.toUri().getPath());
 		FileSystem fs = FileSystem.get(conf);
 
@@ -119,19 +118,19 @@ public class HdfsUtil {
 		//所在文件夹
 		Path path = new Path(folder);
 		FileStatus[] list = fs.listStatus(path);
-		logger.info("ls: " + folder);
-		logger.info("====================================");
+		log.info("ls: " + folder);
+		log.info("====================================");
 		//文件列表
 		List<FileList> fileList = new ArrayList<>();
 		if (list != null)
 			for (FileStatus f : list) {
 				// System.out.printf("name: %s, folder: %s, size: %d\n",
 				// f.getPath(), f.isDir(), f.getLen());
-				logger.info("" + f.getPath().getName() + ",folder: " + (f.isDirectory() ? "目录" : "文件") + ", 大小: " + f.getLen() / 1024 + "k");
+				log.info("" + f.getPath().getName() + ",folder: " + (f.isDirectory() ? "目录" : "文件") + ", 大小: " + f.getLen() / 1024 + "k");
 				FileList list1 = new FileList(f.getPath().getName(),(f.isDirectory() ? "目录" : "文件"),f.getLen()/1024);
 				fileList.add(list1);
 			}
-		logger.info("====================================");
+		log.info("====================================");
 		fs.close();
 
 		return JSON.toJSON(fileList);
@@ -146,17 +145,17 @@ public class HdfsUtil {
 
 		//所在文件或文件夹
 		Path path = new Path(folder);
-		logger.info("ls: " + folder);
-		logger.info("====================================");
+		log.info("ls: " + folder);
+		log.info("====================================");
 		if(!fs.exists(path)){
-			logger.info("文件或目录不存在");
-			logger.info("====================================");
+			log.info("文件或目录不存在");
+			log.info("====================================");
 			return false;
 		}
 		if(!rmdir){
 			if(fs.isDirectory(path)){
-				logger.info("can not delete directory");
-				logger.info("====================================");
+				log.info("can not delete directory");
+				log.info("====================================");
 				return false;
 			}else {
 				fs.delete(path,rmdir);
@@ -164,7 +163,7 @@ public class HdfsUtil {
 		}else{
 			fs.delete(path,rmdir);
 		}
-		logger.info("====================================");
+		log.info("====================================");
 		return true;
 
 	}
